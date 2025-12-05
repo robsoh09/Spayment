@@ -7,19 +7,14 @@
   </div>
   <div class="mt-40 text-center">
     <div class="mt-20 text-center text-secondary border-placeholder">
-      <p>Payment Id: {{paymentId}}</p>
-      <p>Book title: {{bookTitle}}</p>
-      <p>Paid: ${{paymentValue}} USD</p>
-      <p>Status: {{paymentStatus}}</p>
-      <br>
-      <p>Thank you for your purchase</p>
+        <p>Thank you for your purchase</p>
+        <p>Details will be updated shortly</p>
     </div>
   </div>
 </main>
 <script>
   const url = new URL(window.location.href);
-  // Remove thepayment secret by using searchParams and delete 
+  // Remove the payment secret and reloading directly in same browser
   url.searchParams.delete("payment_intent_client_secret");
-  //browser redirect without reloading 
   window.history.replaceState({}, document.title, url.toString());
 </script>

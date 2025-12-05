@@ -2,7 +2,13 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 require('dotenv').config();
-const stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+//publickey setting 
+const spk = process.env.STRIPE_PUBLISHABLE_KEY;
+//simple global variables to act as database to insert pid 
+let pid = ""
+let bookTitle = "";
+
 
 var app = express();
 
@@ -16,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({}));
 
+
 /**
  * Home route
  */
@@ -26,11 +33,11 @@ app.get('/', function(req, res) {
 /**
  * Checkout route
  */
-app.get('/checkout', function(req, res) {
+app.get('/checkout', async (req, res) => {
   // Just hardcoding amounts here to avoid using a database
   const item = req.query.item;
-  let title, amount, error;
-
+    let title, amount, error;
+  
   switch (item) {
     case '1':
       title = "The Art of Doing Science and Engineering"
@@ -49,19 +56,61 @@ app.get('/checkout', function(req, res) {
       error = "No item selected"      
       break;
   }
+  //paymentIntent Generation when selecting a product 
+     try {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount, // Amount in cents Required Field
+        currency: 'usd', // Currency Required Field 
+        automatic_payment_methods: {
+          enabled: true,
+          },
+        });
 
-  res.render('checkout', {
-    title: title,
-    amount: amount,
-    error: error
-  });
+      console.log('Payment Intent created:', paymentIntent.id);
+      console.log('Secret', paymentIntent.client_secret );
+      pid =  paymentIntent.id; 
+      console.log(pid);
+      bookTitle = title;
+      console.log(bookTitle);
+      res.render('checkout', {
+       title: title,
+      amount: paymentIntent.amount,
+      error: error,
+      client_secret: paymentIntent.client_secret, //client_secret for injecting to front-end 
+      spk: spk //publishkey frontend usage
+    });
+       } catch (error) {
+        console.error('Error creating Payment Intent:', error.message);
+     }
+
 });
 
 /**
  * Success route
  */
-app.get('/success', function(req, res) {
-  res.render('success');
+app.get('/success', async (req, res) => {
+  if(pid === ""){
+    res.render('sd')} // render success if somehow webhook process failed
+    else {
+ 
+  const paymentIntent = await stripe.paymentIntents.retrieve(
+  pid
+   );
+  console.log(paymentIntent);
+  let paymentValue = (paymentIntent.amount * 0.01);
+  let paymentId = (paymentIntent.id);
+  let paymentStatus = (paymentIntent.status);
+  console.log(paymentValue);
+  res.render('success', {
+
+    bookTitle: bookTitle,
+    paymentValue: paymentValue,
+    paymentId: paymentId,
+    paymentStatus: paymentStatus
+  
+
+  });
+}
 });
 
 /**
