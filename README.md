@@ -1,29 +1,43 @@
-# Take home project
-This is a simple e-commerce application that a customer can use to purchase a book, but it's missing the payments functionality —  your goal is to integrate Stripe to get this application running!
+Stripe Assignment: Rob Soh Ming Yang 
+This document explains how I approach a take-home payment assignment from a presales perspective. My focus is to keep the solution torwards the business needs.
 
-## Candidate instructions
-You'll receive these in email.
+1. Start With the Goal and functional requirements 
 
-## Application overview
-This demo is written in Javascript (Node.js) with the [Express framework](https://expressjs.com/). You'll need to retrieve a set of testmode API keys from the Stripe dashboard (you can create a free test account [here](https://dashboard.stripe.com/register)) to run this locally.
+Before proceed I first clarify:
+What the business is trying to do  
+What a successful outcome (in this case, customer payment) 
 
-We're using the [Bootstrap](https://getbootstrap.com/docs/4.6/getting-started/introduction/) CSS framework. It's the most popular CSS framework in the world and is pretty easy to get started with — feel free to modify styles/layout if you like. 
+This helps me avoid overbuilding a demo when its required and keeps the solution straightforard.
 
-To simplify this project, we're also not using any database here, either. Instead `app.js` includes a simple switch statement to read the GET params for `item`. 
+2. Business needs to Business logic 
+I always define a flow and map it accordingly. In the assignment: 
+Customer -> Purchase -> Submits Payment -> Return Success / Failure  
 
-To get started, clone the repository and run `npm install` to install dependencies:
+This makes it easy for both the business and tech  to follow what is happening.
 
-```
-git clone https://github.com/mattmitchell6/sa-takehome-project-node && cd sa-takehome-project-node
-npm install
-```
+3. Show only what is required
+   
+I only set up what is required for the use case:
+One-time payments which may include basic success and simple failure handling  
+confirmation of payment status  
 
-Rename `sample.env` to `.env` and populate with your Stripe account's test API keys
+This keeps the demo realistic enough
 
-Then run the application locally:
+4. Build a Working Demo
 
-```
-npm start
-```
+My priority is to deliver outcomes mapped to requirements:
+• One successful payment  
+• A visible confirmation step  
+• A smooth user experience  
 
-Navigate to [http://localhost:3000](http://localhost:3000) to view the index page.
+5. Explain simply
+
+I make sure I explain:
+What happens at each step and why it is used for
+A visual representation at each step aligned to the business outcome 
+
+
+6. Risks and next step
+   
+my focus is to ensure customer can have the best understanding and seeing is believing 
+A working demo provides this approach. Once this is confirmed, i will present the common risks(if any) and will proceed to the next step with the customer.
