@@ -43,7 +43,7 @@ A visual representation at each step aligned to the business outcome
    
 my focus is to ensure customer can have the best understanding and seeing is believing. 
 
-A working demo provides this approach. Once this is confirmed, i will present the common risks(if any) and will proceed to the next step with the customer.
+A working demo provides this approach. I will present the common risks(if any) and will proceed to the next step with the customer.
 
 Solution Assignment Overview: 
 1. Learning & Environment Setup
